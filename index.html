@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>NeDB integration</title>
+  <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+  <h1>Persist data with NeDB</h1>
+  <div>
+    <h2>Insert a document</h2>
+    <form>
+      <input type="text" name="name" id="name" placeholder="write your name" autofocus><br>
+      <input type="number" name="age" id="age" placeholder="write your age"><br>
+      <button id="save-user">Save</button>
+    </form>
+  </div>
+
+  <div>
+    <h2>Find documents by field name</h2>
+    <input type="text" name="search" id="search" placeholder="name">
+    <button id="find-users">Search</button><br><br>
+    <div id="found-docs"></div>
+  </div>
+  
+  <script>require('./crud');</script>
+</body>
+</html>
