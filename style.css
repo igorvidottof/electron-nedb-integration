@@ -2,4 +2,10 @@ div {
   padding: 10px;
   border: 1px solid #ccc;
   margin-bottom: 5px;
+  margin-top: 5px;
+}
+
+input {
+  display: block;
+  margin-bottom: 5px;
 }

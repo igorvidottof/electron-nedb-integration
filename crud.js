@@ -44,24 +44,6 @@ ipcRenderer.on('find-users-success', (event, docs) => {
       p.textContent = JSON.stringify(doc);
       divDoc.appendChild(p);
 
-      // create buttons
-      let btnUpdate = document.createElement('button');
-      btnUpdate.textContent = 'Update';
-      btnUpdate.setAttribute('class', 'update-user');
-      // verify the best way to do this
-      /*btnUpdate.addEventListener('click', () => {
-        let divDoc = btnUpdate.parentNode;
-        console.log(divDoc.firstChild.textContent);
-      });*/
-
-      let btnDelete = document.createElement('button');
-      btnDelete.textContent = 'Delete';
-      btnDelete.setAttribute('class', 'delete-user');
-
-      // add buttons in the view
-      divDoc.appendChild(btnUpdate);
-      divDoc.appendChild(btnDelete);
-
       // insert doc and buttons in the view
       divResp.appendChild(divDoc);
     });

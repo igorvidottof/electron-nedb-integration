@@ -10,8 +10,8 @@
   <div>
     <h2>Insert a document</h2>
     <form>
-      <input type="text" name="name" id="name" placeholder="write your name" autofocus><br>
-      <input type="number" name="age" id="age" placeholder="write your age"><br>
+      <input type="text" name="name" id="name" placeholder="write your name" autofocus>
+      <input type="number" name="age" id="age" placeholder="write your age">
       <button id="save-user">Save</button>
     </form>
   </div>
@@ -19,8 +19,16 @@
   <div>
     <h2>Find documents by field name</h2>
     <input type="text" name="search" id="search" placeholder="name">
-    <button id="find-users">Search</button><br><br>
+    <button id="find-users">Search</button>
     <div id="found-docs"></div>
+  </div>
+
+  <div>
+    <h2>Update a document by id</h2>
+    <input type="text" name="user-id" id="user-id" placeholder="user id">
+    <input type="text" name="newName" id="newName" placeholder="new name">
+    <input type="number" name="newAge" id="newAge" placeholder="new age">
+    <button id="update-user">Save</button>
   </div>
   
   <script>require('./crud');</script>
