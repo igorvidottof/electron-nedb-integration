@@ -48,6 +48,11 @@ ipcRenderer.on('find-users-success', (event, docs) => {
       let btnUpdate = document.createElement('button');
       btnUpdate.textContent = 'Update';
       btnUpdate.setAttribute('class', 'update-user');
+      // verify the best way to do this
+      /*btnUpdate.addEventListener('click', () => {
+        let divDoc = btnUpdate.parentNode;
+        console.log(divDoc.firstChild.textContent);
+      });*/
 
       let btnDelete = document.createElement('button');
       btnDelete.textContent = 'Delete';
