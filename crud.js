@@ -71,3 +71,19 @@ ipcRenderer.on('update-user-error', (event, err) => {
 ipcRenderer.on('update-user-success', (event, msg) => {
   alert(msg);
 });
+
+// remove a document by id
+let btnRemoveUser = document.getElementById('remove-user');
+
+btnRemoveUser.addEventListener('click', () => {
+  let id = document.getElementById('remove-id').value;
+  ipcRenderer.send('remove-user-request', id);
+});
+
+ipcRenderer.on('remove-user-error', (event, err) => {
+  alert(err);
+});
+
+ipcRenderer.on('remove-user-success', (event, msg) => {
+  alert(msg);
+});

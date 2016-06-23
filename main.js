@@ -60,6 +60,18 @@ ipcMain.on('update-user-request', (event, user) => {
   });
 });
 
+// remove a document by id
+ipcMain.on('remove-user-request', (event, id) => {
+  db.remove({_id: id}, (err, numRemoved) => {
+    if(err)  
+      event.sender.send('remove-user-error', `An error occurred\n${err}`);
+    else if(numRemoved === 0) 
+      event.sender.send('remove-user-error', 'User not found!');
+    else 
+      event.sender.send('remove-user-success', 'User removed!');
+  });
+});
+
 app.on('window-all-closed', () => {
   if(process.platform !== 'darwin') {
     app.quit();
