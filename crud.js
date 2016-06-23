@@ -52,3 +52,22 @@ ipcRenderer.on('find-users-success', (event, docs) => {
     divResp.textContent = 'No documents found';
   }
 });
+
+// update a document by id
+let btnUpdateUser = document.getElementById('update-user');
+
+btnUpdateUser.addEventListener('click', () => {
+  let user = {};
+  user._id = document.getElementById('user-id').value;
+  user.newName = document.getElementById('new-name').value;
+  user.newAge = document.getElementById('new-age').value;
+  ipcRenderer.send('update-user-request', user);
+});
+
+ipcRenderer.on('update-user-error', (event, err) => {
+  alert(err);
+});
+
+ipcRenderer.on('update-user-success', (event, msg) => {
+  alert(msg);
+});

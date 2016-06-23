@@ -46,6 +46,20 @@ ipcMain.on('find-users-request', (event, searchedName) => {
   });
 });
 
+// update a document by id
+ipcMain.on('update-user-request', (event, user) => {
+  let query = {_id: user._id};
+  let changes = { $set: {name: user.newName, age: user.newAge} };
+  db.update(query, changes, (err, numAffected) => {
+    if(err)
+      event.sender.send('update-user-error', `An error occurred\n${err}`);
+    else if(numAffected === 0)
+      event.sender.send('update-user-error', 'User not found!');
+    else 
+      event.sender.send('update-user-success', 'User updated!');
+  });
+});
+
 app.on('window-all-closed', () => {
   if(process.platform !== 'darwin') {
     app.quit();
