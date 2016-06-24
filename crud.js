@@ -87,3 +87,12 @@ ipcRenderer.on('remove-user-error', (event, err) => {
 ipcRenderer.on('remove-user-success', (event, msg) => {
   alert(msg);
 });
+
+// Upload a media file
+let btnUploadMedia = document.getElementById('upload-media');
+
+btnUploadMedia.addEventListener('click', () => {
+  let mediaPath = document.getElementById('media').value;
+  console.log(mediaPath);
+  ipcRenderer.send('upload-media-request', mediaPath);
+});

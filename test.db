@@ -1,4 +1,3 @@
-{"name":"Igor Vidotto","age":"20","_id":"5N1ieLHy4XSFHvDZ","createdAt":{"$$date":1466250424672},"updatedAt":{"$$date":1466250424672}}
 {"name":"Dênis","age":"28","_id":"89Iauf1qDzy4E7Nf","createdAt":{"$$date":1466427903669},"updatedAt":{"$$date":1466427903669}}
 {"name":"Marshal","age":"34","_id":"CFySL4kOl1yb6raV","createdAt":{"$$date":1466428712034},"updatedAt":{"$$date":1466428712034}}
 {"name":"Barney","age":"34","_id":"fmWWqIIskrzBhUQN","createdAt":{"$$date":1466554944149},"updatedAt":{"$$date":1466554944149}}
@@ -6,4 +5,3 @@
 {"name":"Antônio","age":"28","_id":"rDK9jkJEV60wf5RB","createdAt":{"$$date":1466428547126},"updatedAt":{"$$date":1466428547126}}
 {"name":"Ash","age":"24","_id":"rkoXr72JIJ36afb9","createdAt":{"$$date":1466428215579},"updatedAt":{"$$date":1466428215579}}
 {"name":"Igor","age":"20","_id":"shG0MZIDrPQNFzOb","createdAt":{"$$date":1466168823505},"updatedAt":{"$$date":1466168823505}}
-{"$$deleted":true,"_id":"5N1ieLHy4XSFHvDZ"}

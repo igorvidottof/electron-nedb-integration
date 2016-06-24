@@ -2,6 +2,7 @@ const electron = require('electron');
 const {app} = electron;
 const {BrowserWindow} = electron;
 const {ipcMain} = require('electron');
+const fs = require('fs-extra');
 const Datastore = require('nedb');
 
 const db = new Datastore({
@@ -70,6 +71,17 @@ ipcMain.on('remove-user-request', (event, id) => {
     else 
       event.sender.send('remove-user-success', 'User removed!');
   });
+});
+
+// upload a media file
+ipcMain.on('upload-media-request', (event, mediaPath) => {
+  console.log(mediaPath);
+  // fs.copy(mediaPath, './', (err) => {
+  //   if(err)
+  //     return console.error(err);
+  //   else 
+  //     console.log('success');
+  // });
 });
 
 app.on('window-all-closed', () => {
