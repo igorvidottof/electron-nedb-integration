@@ -1,4 +1,6 @@
 const {ipcRenderer} = require('electron');
+const path = require('path');
+
 let divResp = document.getElementById('found-docs');
 
 // insert a document
@@ -89,10 +91,34 @@ ipcRenderer.on('remove-user-success', (event, msg) => {
 });
 
 // Upload a media file
+let btnSelectFile = document.getElementById('select-file');
 let btnUploadMedia = document.getElementById('upload-media');
+
+btnSelectFile.addEventListener('click', () => {
+  ipcRenderer.send('select-file-request');
+});
+
+ipcRenderer.on('select-file-success', (event, file) => {
+  file = file[0];
+  let divPreviewUpload = document.getElementById('preview-upload');
+  if(path.extname(file) === '.wmv' || path.extname(file) === '.mp3') {
+    let previewAudio = document.getElementById('preview-audio');
+    previewAudio.setAttribute('src', file);
+    previewAudio.setAttribute('controls', 'controls');
+    divPreviewUpload.appendChild(previewAudio);
+  } 
+  else {
+    let previewImg = document.getElementById('preview-image');
+    previewImg.setAttribute('src', file);
+    divPreviewUpload.appendChild(previewImg);
+  }
+  divPreviewUpload.style.display = 'block';
+});
 
 btnUploadMedia.addEventListener('click', () => {
   let mediaPath = document.getElementById('media').value;
   console.log(mediaPath);
   ipcRenderer.send('upload-media-request', mediaPath);
 });
+
+

@@ -41,12 +41,15 @@
     </form>
   </div>
 
-  <div>
+  <div id="upload">
     <h2>Upload a media file</h2>
     
-    <input type="file" id="media" name="media" placeholder="upload your media file">
+    <button id="select-file" name="select-file">Select a file</button>
     <button id="upload-media">Upload</button>
-    
+    <div id="preview-upload" style="display: none;">
+      <img id="preview-image" src="">
+      <audio id="preview-audio" src=""></audio>
+    </div>
   </div>
 
   <script>require('./crud');</script>

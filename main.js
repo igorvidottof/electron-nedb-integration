@@ -4,6 +4,7 @@ const {BrowserWindow} = electron;
 const {ipcMain} = require('electron');
 const fs = require('fs-extra');
 const Datastore = require('nedb');
+const {dialog} = require('electron');
 
 const db = new Datastore({
   filename: 'test.db', autoload: true, timestampData: true 
@@ -74,6 +75,18 @@ ipcMain.on('remove-user-request', (event, id) => {
 });
 
 // upload a media file
+ipcMain.on('select-file-request', (event) => {
+  let file = dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      {name: 'Images', extensions: ['jpg', 'png', 'gif']},
+      {name: 'Audios', extensions: ['wmv', 'mp3']}
+    ]
+  });
+  event.sender.send('select-file-success', file);
+});
+
+
 ipcMain.on('upload-media-request', (event, mediaPath) => {
   console.log(mediaPath);
   // fs.copy(mediaPath, './', (err) => {
