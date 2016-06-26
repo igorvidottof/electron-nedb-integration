@@ -75,17 +75,25 @@ ipcMain.on('remove-user-request', (event, id) => {
 });
 
 // upload a media file
-ipcMain.on('select-file-request', (event) => {
-  let file = dialog.showOpenDialog({
+ipcMain.on('select-audio-request', (event) => {
+  let audioPath = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
-      {name: 'Images', extensions: ['jpg', 'png', 'gif']},
       {name: 'Audios', extensions: ['wmv', 'mp3']}
     ]
   });
-  event.sender.send('select-file-success', file);
+  event.sender.send('select-audio-success', audioPath);
 });
 
+ipcMain.on('select-image-request', (event) => {
+  let imagePath = dialog.showOpenDialog({
+    properties: ['openFile'],
+    filters: [
+      {name: 'Images', extensions: ['jpg', 'png', 'gif']}
+    ]
+  });
+  event.sender.send('select-image-success', imagePath);
+});
 
 ipcMain.on('upload-media-request', (event, mediaPath) => {
   console.log(mediaPath);

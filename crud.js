@@ -1,5 +1,4 @@
 const {ipcRenderer} = require('electron');
-const path = require('path');
 
 let divResp = document.getElementById('found-docs');
 
@@ -91,27 +90,37 @@ ipcRenderer.on('remove-user-success', (event, msg) => {
 });
 
 // Upload a media file
-let btnSelectFile = document.getElementById('select-file');
+let btnSelectAudio = document.getElementById('select-audio');
+let btnSelectImage = document.getElementById('select-image');
 let btnUploadMedia = document.getElementById('upload-media');
+let divPreviewUpload = document.getElementById('preview-upload');
 
-btnSelectFile.addEventListener('click', () => {
-  ipcRenderer.send('select-file-request');
+btnSelectAudio.addEventListener('click', () => {
+  ipcRenderer.send('select-audio-request');
 });
 
-ipcRenderer.on('select-file-success', (event, file) => {
-  file = file[0];
-  let divPreviewUpload = document.getElementById('preview-upload');
-  if(path.extname(file) === '.wmv' || path.extname(file) === '.mp3') {
-    let previewAudio = document.getElementById('preview-audio');
-    previewAudio.setAttribute('src', file);
-    previewAudio.setAttribute('controls', 'controls');
-    divPreviewUpload.appendChild(previewAudio);
-  } 
-  else {
-    let previewImg = document.getElementById('preview-image');
-    previewImg.setAttribute('src', file);
-    divPreviewUpload.appendChild(previewImg);
-  }
+btnSelectImage.addEventListener('click', () => {
+  ipcRenderer.send('select-image-request');
+});
+
+ipcRenderer.on('select-audio-success', (event, audioPath) => {
+  audioPath = audioPath[0];
+
+  let previewAudio = document.getElementById('preview-audio');
+  previewAudio.setAttribute('src', audioPath);
+  previewAudio.setAttribute('controls', 'controls');
+  divPreviewUpload.appendChild(previewAudio);
+
+  divPreviewUpload.style.display = 'block';
+});
+
+ipcRenderer.on('select-image-success', (event, imagePath) => {
+  imagePath = imagePath[0];
+
+  let previewImage = document.getElementById('preview-image');
+  previewImage.setAttribute('src', imagePath);
+  divPreviewUpload.appendChild(previewImage);
+
   divPreviewUpload.style.display = 'block';
 });
 

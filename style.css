@@ -5,7 +5,7 @@ div {
   margin-top: 5px;
 }
 
-input {
+input, img, audio {
   display: block;
   margin-bottom: 5px;
 }
