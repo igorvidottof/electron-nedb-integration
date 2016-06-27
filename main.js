@@ -6,8 +6,12 @@ const fs = require('fs-extra');
 const Datastore = require('nedb');
 const {dialog} = require('electron');
 
-const db = new Datastore({
+const db = {};
+db.users = new Datastore({
   filename: 'test.db', autoload: true, timestampData: true 
+});
+db.files = new Datastore({
+  filename: 'files.db', autoload: true, timestampData: true 
 });
 
 let win;
@@ -28,7 +32,7 @@ ipcMain.on('save-user-request', (event, user) => {
     name: user.name,
     age: user.age
   };
-  db.insert(newUser, (err, newDoc) => {
+  db.users.insert(newUser, (err, newDoc) => {
     if(err)
       event.sender.send('save-user-error', `An error occurred\n${err}`);
     else 
@@ -40,7 +44,7 @@ ipcMain.on('save-user-request', (event, user) => {
 ipcMain.on('find-users-request', (event, searchedName) => {
   searchedName = new RegExp(searchedName);
   let query = {name: searchedName};
-  db.find(query, (err, docs) => {
+  db.users.find(query, (err, docs) => {
     if(err)
       event.sender.send('find-users-error', `An error occurred\n${err}`);
     else 
@@ -52,7 +56,7 @@ ipcMain.on('find-users-request', (event, searchedName) => {
 ipcMain.on('update-user-request', (event, user) => {
   let query = {_id: user._id};
   let changes = { $set: {name: user.newName, age: user.newAge} };
-  db.update(query, changes, (err, numAffected) => {
+  db.users.update(query, changes, (err, numAffected) => {
     if(err)
       event.sender.send('update-user-error', `An error occurred\n${err}`);
     else if(numAffected === 0)
@@ -64,7 +68,7 @@ ipcMain.on('update-user-request', (event, user) => {
 
 // remove a document by id
 ipcMain.on('remove-user-request', (event, id) => {
-  db.remove({_id: id}, (err, numRemoved) => {
+  db.users.remove({_id: id}, (err, numRemoved) => {
     if(err)  
       event.sender.send('remove-user-error', `An error occurred\n${err}`);
     else if(numRemoved === 0) 
@@ -95,8 +99,17 @@ ipcMain.on('select-image-request', (event) => {
   event.sender.send('select-image-success', imagePath);
 });
 
-ipcMain.on('upload-media-request', (event, mediaPath) => {
-  console.log(mediaPath);
+
+ipcMain.on('upload-media-request', (event) => {
+  let newFile = {
+    name: 'test'
+  };
+  db.files.insert(newFile, (err, newDoc) => {
+    if(err)
+      event.sender.send('upload-media-error', `An error occurred\n${err}`);
+    else 
+      event.sender.send('upload-media-success', newDoc); 
+  });
   // fs.copy(mediaPath, './', (err) => {
   //   if(err)
   //     return console.error(err);

@@ -125,9 +125,15 @@ ipcRenderer.on('select-image-success', (event, imagePath) => {
 });
 
 btnUploadMedia.addEventListener('click', () => {
-  let mediaPath = document.getElementById('media').value;
-  console.log(mediaPath);
-  ipcRenderer.send('upload-media-request', mediaPath);
+  ipcRenderer.send('upload-media-request');
+});
+
+ipcRenderer.on('upload-media-error', (event, err) => {
+  alert(err);
+});
+
+ipcRenderer.on('upload-media-success', (event, newDoc) => {
+  alert(`New file: ${newDoc._id}`);
 });
 
 
