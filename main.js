@@ -5,6 +5,9 @@ const {ipcMain} = require('electron');
 const fs = require('fs-extra');
 const Datastore = require('nedb');
 const {dialog} = require('electron');
+const os = require('os');
+
+const homeDir = os.homedir();
 
 const db = {};
 db.users = new Datastore({
@@ -100,22 +103,24 @@ ipcMain.on('select-image-request', (event) => {
 });
 
 
-ipcMain.on('upload-media-request', (event) => {
-  let newFile = {
-    name: 'test'
-  };
-  db.files.insert(newFile, (err, newDoc) => {
+ipcMain.on('upload-media-request', (event, files) => {
+  db.files.insert(files, (err, newDoc) => {
     if(err)
       event.sender.send('upload-media-error', `An error occurred\n${err}`);
     else 
       event.sender.send('upload-media-success', newDoc); 
   });
-  // fs.copy(mediaPath, './', (err) => {
-  //   if(err)
-  //     return console.error(err);
-  //   else 
-  //     console.log('success');
-  // });
+
+  for(var key in files) {
+    // fix bug
+    // Error: EISDIR: illegal operation on a directory, unlink '/home/igor/Desktop/test-nedb'
+    fs.copy(files[key], `${homeDir}/Desktop/test-nedb`, (err) => {
+      if(err)
+        return console.error(err);
+      else 
+        console.log('success');
+    });
+  }
 });
 
 app.on('window-all-closed', () => {
