@@ -102,25 +102,29 @@ ipcMain.on('select-image-request', (event) => {
   event.sender.send('select-image-success', imagePath);
 });
 
-
-ipcMain.on('upload-media-request', (event, files) => {
-  db.files.insert(files, (err, newDoc) => {
-    if(err)
-      event.sender.send('upload-media-error', `An error occurred\n${err}`);
-    else 
-      event.sender.send('upload-media-success', newDoc); 
-  });
-
-  for(var key in files) {
-    // fix bug
-    // Error: EISDIR: illegal operation on a directory, unlink '/home/igor/Desktop/test-nedb'
-    fs.copy(files[key], `${homeDir}/Desktop/test-nedb`, (err) => {
-      if(err)
-        return console.error(err);
-      else 
-        console.log('success');
-    });
+ipcMain.on('upload-media-request', (event, originalPaths) => {
+  newPaths = {audio: null, image: null};
+  for(let key in originalPaths) {
+    let fileName = originalPaths[key].split(/\//);
+    fileName = fileName[fileName.length - 1];
+    newPaths[key] = `${homeDir}/Desktop/test-nedb/${fileName}`;
   }
+
+  db.files.insert(newPaths, (err, newDoc) => {
+    if(err) {
+      event.sender.send('upload-media-error', `An error occurred\n${err}`);
+    }
+    else {
+      for(let key in originalPaths) {
+        fs.copy(originalPaths[key], newPaths[key], (err) => {
+          if(err) 
+            event.sender.send('upload-media-error', `Error while uploading file\n${err}`);
+          else 
+            event.sender.send('upload-media-success', newDoc, 'file uploaded!');
+        });
+      }
+    }
+  });
 });
 
 app.on('window-all-closed', () => {

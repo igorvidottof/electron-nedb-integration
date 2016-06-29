@@ -94,7 +94,7 @@ let btnSelectAudio = document.getElementById('select-audio');
 let btnSelectImage = document.getElementById('select-image');
 let btnUploadMedia = document.getElementById('upload-media');
 let divPreviewUpload = document.getElementById('preview-upload');
-let files = {};
+let originalPaths = {};
 
 btnSelectAudio.addEventListener('click', () => {
   ipcRenderer.send('select-audio-request');
@@ -106,7 +106,7 @@ btnSelectImage.addEventListener('click', () => {
 
 ipcRenderer.on('select-audio-success', (event, audioPath) => {
   audioPath = audioPath[0];
-  files.audio = audioPath;
+  originalPaths.audio = audioPath;
 
   let previewAudio = document.getElementById('preview-audio');
   previewAudio.setAttribute('src', audioPath);
@@ -118,7 +118,7 @@ ipcRenderer.on('select-audio-success', (event, audioPath) => {
 
 ipcRenderer.on('select-image-success', (event, imagePath) => {
   imagePath = imagePath[0];
-  files.image = imagePath;
+  originalPaths.image = imagePath;
 
   let previewImage = document.getElementById('preview-image');
   previewImage.setAttribute('src', imagePath);
@@ -128,15 +128,13 @@ ipcRenderer.on('select-image-success', (event, imagePath) => {
 });
 
 btnUploadMedia.addEventListener('click', () => {
-  ipcRenderer.send('upload-media-request', files);
+  ipcRenderer.send('upload-media-request', originalPaths);
 });
 
 ipcRenderer.on('upload-media-error', (event, err) => {
   alert(err);
 });
 
-ipcRenderer.on('upload-media-success', (event, newDoc) => {
-  alert(`New file: ${newDoc._id}`);
+ipcRenderer.on('upload-media-success', (event, newDoc, msg) => {
+  alert(`Document "${newDoc._id}": ${msg}`);
 });
-
-
