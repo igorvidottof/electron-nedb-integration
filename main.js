@@ -86,7 +86,7 @@ ipcMain.on('select-audio-request', (event) => {
   let audioPath = dialog.showOpenDialog({
     properties: ['openFile'],
     filters: [
-      {name: 'Audios', extensions: ['wmv', 'mp3']}
+      {name: 'Audios', extensions: ['wav', 'mp3', 'ogg']}
     ]
   });
   event.sender.send('select-audio-success', audioPath);
@@ -103,11 +103,18 @@ ipcMain.on('select-image-request', (event) => {
 });
 
 ipcMain.on('upload-media-request', (event, originalPaths) => {
+  let dir = `${homeDir}/test-nedb/files`;
+  try {
+    fs.ensureDirSync(dir);
+  } catch (err) {
+    event.sender.send('upload-media-error', `An error occurred\n${err}`);
+  }
+
   newPaths = {audio: null, image: null};
   for(let key in originalPaths) {
     let fileName = originalPaths[key].split(/\//);
     fileName = fileName[fileName.length - 1];
-    newPaths[key] = `${homeDir}/Desktop/test-nedb/${fileName}`;
+    newPaths[key] = `${dir}/${fileName}`;
   }
 
   db.files.insert(newPaths, (err, newDoc) => {
